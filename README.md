@@ -1,3 +1,22 @@
+Template project for quick start React app with material-ui components, redux, etc...
+
+### Instruction for installation new React project
+
+`npx create-react-app my-app-name`
+
+`cd my-app-name`
+
+`npm install @material-ui/core`
+
+`npm install redux react-redux redux-thunk history react-router connected-react-router node-sass`
+
+`npm install flow-bin`
+
+
+Material UI Components: https://material-ui.com/components/
+
+---
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
