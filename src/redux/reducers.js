@@ -1,4 +1,5 @@
 import * as types from './types';
+import { pathToTabIndex } from '../common/utils/tab-utils';
 
 export type AppStore = {
     initialized: boolean,
@@ -11,7 +12,8 @@ export const initialState: AppStore = {
 };
 
 export default (state: AppStore = initialState, action: any): AppStore => {
-    console.log("Reducer: " + action.type);
+    console.log('Reducer: ' + action.type);
+    console.log(action);
     switch (action.type) {
         case types.LOAD_DATA_REQUEST:
             return {
@@ -22,6 +24,12 @@ export default (state: AppStore = initialState, action: any): AppStore => {
             return {
                 ...state,
                 activeTab: action.newTab,
+            };
+        case types.LOCATION_CHANGE:
+            console.log('LOCATION_CHANGE: ' + action.payload.location.pathname)
+            return {
+                ...state,
+                activeTab: pathToTabIndex(action.payload.location.pathname),
             };
 /*        case types.LOCATION_CHANGE:
             const newTab = pathToTabIndex(action.payload.location.pathname);
@@ -52,13 +60,3 @@ export default (state: AppStore = initialState, action: any): AppStore => {
             return state
     }
 }
-
-const pathToTabIndex = (path: string): number => {
-    switch (path) {
-        case '/': return 0;
-        case '/favorite': return 1;
-        case '/details': return 2;
-        case '/comparison': return 3;
-        default: return 0;
-    }
-};

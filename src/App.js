@@ -8,6 +8,8 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import { Preloader } from "./common/components/preloader";
 import * as actions from "./redux/actions";
+import { history } from './redux/store';
+import { tabIndexToPath } from './common/utils/tab-utils';
 import './App.css';
 
 import type { AppStore } from './redux/reducers'
@@ -31,14 +33,12 @@ function TabPanel(props) {
 export class App extends React.Component<Actions & { store: AppStore }> {
 
     componentDidMount(): void {
-        console.log("App.componentDidMount");
-        console.log(this.props);
         this.props.loadDataAction()
     }
 
-
     handleChange = (event: Event, newValue: number) => {
         this.props.changeTabAction(newValue);
+        history.push(tabIndexToPath(newValue));
     };
 
     render() {

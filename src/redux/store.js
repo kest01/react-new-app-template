@@ -16,7 +16,6 @@ const createRootReducer = (history) => combineReducers({
 });
 
 export function configureStore(initState: AppStore) {
-    console.log("configureStore" + initState);
     return createStore(
         createRootReducer(history),
         initState ? initState : { store: initialState},
