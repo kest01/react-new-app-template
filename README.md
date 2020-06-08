@@ -12,6 +12,9 @@ Template project for quick start React app with material-ui components, redux, e
 
 `npm install flow-bin`
 
+Functional libs if you want:
+`npm install ramda ramda-fantasy`
+
 
 Material UI Components: https://material-ui.com/components/
 

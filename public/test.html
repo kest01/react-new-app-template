@@ -1,0 +1,86 @@
+<script src="file:///home/kest/repos/my/react-new-app-template/node_modules/ramda/dist/ramda.js"></script>
+<script src="/home/kest/repos/my/react-new-app-template/node_modules/ramda-fantasy/dist/ramda-fantasy.js"></script>
+<!--
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ramda/0.25.0/ramda.min.js"></script>
+<script src="file:///home/kest/repos/my/react-new-app-template/node_modules/sanctuary-type-identifiers/index.js"></script>
+<script src="file:///home/kest/repos/my/react-new-app-template/node_modules/sanctuary-type-classes/index.js"></script>
+<script src="file:///home/kest/repos/my/react-new-app-template/node_modules/sanctuary-show/index.js"></script>
+<script src="file:///home/kest/repos/my/react-new-app-template/node_modules/sanctuary-pair/index.js"></script>
+<script src="file:///home/kest/repos/my/react-new-app-template/node_modules/sanctuary-either/index.js"></script>
+<script src="file:///home/kest/repos/my/react-new-app-template/node_modules/sanctuary-maybe/index.js"></script>
+<script src="file:///home/kest/repos/my/react-new-app-template/node_modules/sanctuary-def/index.js"></script>
+<script src="file:///home/kest/repos/my/react-new-app-template/node_modules/sanctuary/index.js"></script>
+-->
+
+<script>
+
+    // const self = this;
+    // for (var i in window) {
+    //     console.log(i, typeof self[i], self[i]);
+    // }
+
+    // console.log('RF', RF)
+
+    const log = (o) => {
+        console.log(o);
+        return o;
+    }
+
+    const Maybe = RF.Maybe;
+
+/*
+    Maybe.Just(1).__proto__.map = function (f) {
+        return Maybe(f(this.value));
+    }
+*/
+    Object.getPrototypeOf(Maybe.Just(1)).map = function (f) {
+        return Maybe(f(this.value));
+    }
+
+
+    const tabMapping = {
+        '0': '/forms',
+        '1': '/modals',
+    }
+
+
+    // console.log('str == ', toLowerSafe('STR'))
+    // console.log('"" == ', toLowerSafe())
+    // console.log('"" == ', toLowerSafe(null))
+
+    const pathToTabIndex = (path) => {
+        const toLowerSafe = (s) => RF.Maybe(s).map(R.toLower).getOrElse('')
+        const findPairByPath = R.find(R.pipe(R.nth(1), R.equals(toLowerSafe(path))))
+        return Maybe(tabMapping).map(R.toPairs).map(findPairByPath).map(R.nth(0)).map(parseInt).getOrElse(0)
+/*
+        const getIndex = S.map(S.fst)
+        let res = mapObjToPairs(Maybe.Just(tabMapping))
+        console.log('mapObjToPairs', res)
+        res = findPairByPath(res)
+        console.log('findPairByPath', res)
+        res = S.join(res)
+        console.log('join', res)
+        res = getIndex(res)
+        console.log('getIndex', res)
+        res = S.map(S.parseInt(10))(res)
+        console.log('parseInt', res)
+        return res;
+*/
+    };
+/*
+    const pathToTabIndex = (path) => {
+        return S.map(Maybe.Just(tabMapping)
+            .map(R.curry()
+            .map(R.find(ar => ar[1] === path))
+            .map(R.nth(0))
+    };
+*/
+
+
+    console.log("0 == " + pathToTabIndex('/forms'))
+    console.log("1 == " + pathToTabIndex('/modals'))
+    console.log("0 == " + pathToTabIndex('/none'))
+    console.log("1 == " + pathToTabIndex('/MoDaLs'))
+    console.log("0 == " + pathToTabIndex())
+
+</script>
