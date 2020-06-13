@@ -1,5 +1,5 @@
 import * as R from 'ramda';
-import { Maybe, fst, snd } from './fuctional';
+import { Maybe, fst, snd } from './functional';
 
 const tabMapping = {
     0: '/forms',

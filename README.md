@@ -6,14 +6,17 @@ Template project for quick start React app with material-ui components, redux, e
 
 `cd my-app-name`
 
-`npm install @material-ui/core`
+`npm install @material-ui/core @material-ui/pickers react-text-mask`
 
-`npm install redux react-redux redux-thunk history react-router connected-react-router node-sass`
+`npm install redux react-redux redux-thunk history react-router connected-react-router node-sass axios`
 
 `npm install flow-bin`
 
 Functional libs if you want:
 `npm install ramda ramda-fantasy`
+
+Date utils:
+`npm install date-fns @date-io/date-fns`
 
 
 Material UI Components: https://material-ui.com/components/

@@ -10,6 +10,7 @@ import { Preloader } from "./common/components/preloader";
 import * as actions from "./redux/actions";
 import { history } from './redux/store';
 import { tabIndexToPath } from './common/utils/tab-utils';
+import { FormsTab } from "./common/components/forms-tab";
 import './App.css';
 
 import type { AppStore } from './redux/reducers'
@@ -55,7 +56,7 @@ export class App extends React.Component<Actions & { store: AppStore }> {
                         </Tabs>
                     </AppBar>
                     <TabPanel value={activeTab} index={0}>
-                        Item One
+                        <FormsTab/>
                     </TabPanel>
                     <TabPanel value={activeTab} index={1}>
                         Item Two
