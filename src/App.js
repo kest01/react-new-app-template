@@ -56,7 +56,7 @@ export class App extends React.Component<Actions & { store: AppStore }> {
                         </Tabs>
                     </AppBar>
                     <TabPanel value={activeTab} index={0}>
-                        <FormsTab/>
+                        <FormsTab submitForm={ this.props.submitForm } />
                     </TabPanel>
                     <TabPanel value={activeTab} index={1}>
                         Item Two

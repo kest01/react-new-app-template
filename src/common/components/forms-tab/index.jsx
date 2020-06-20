@@ -28,6 +28,14 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+type FormEntity = {
+    textValue: string,
+    selectedDate: string,
+    gender: string,
+    age: number,
+    phone: string,
+}
+
 function TextMaskCustom(props) {
     const { inputRef, ...other } = props;
 
@@ -44,18 +52,19 @@ function TextMaskCustom(props) {
     );
 }
 
-export function FormsTab()  {
+type Props = {
+    submitForm: (form: {}) => void,
+}
+
+export function FormsTab(props: Props)  {
     const classes = useStyles();
 
-    const [entity, setEntity] = React.useState({
+    const [entity: FormEntity, setEntity] = React.useState({
         textValue: '',
         selectedDate: new Date('2014-08-18T21:11:54'),
         gender: 'female',
-        age: '',
-        phone: {
-            textmask: '+7 (   )    -  -  ',
-            numberformat: '1320',
-        }
+        age: 10,
+        phone: '+7 (   )    -  -  ',
     });
     const updateEntity = (field: string, value: any ) => {
         console.log('Previous entity: ', entity);
@@ -71,24 +80,28 @@ export function FormsTab()  {
     const handleFieldChange = (field) => (value) => {
         updateEntity(field, value)
     };
-    const handlePhoneChange = (event) => {
-        updateEntity("phone", {
-            ...entity.phone,
-            textmask: event.target.value,
-        });
-    };
 
-    const [errors, setErrors] = React.useState({});
-    const onSubmit = (event) => {
+    const validateFormAndShowErrors = (): boolean => {
+        let result = true;
         const newErrors = {}
         if (!entity.textValue) {
             newErrors.textValue = 'Заполните поле';
+            result = false;
         }
         setErrors(newErrors);
 
+        return result;
+    }
+
+    const [errors, setErrors] = React.useState({});
+    const onSubmit = (event) => {
         event.preventDefault();
+        if (validateFormAndShowErrors()) {
+            props.submitForm(entity)
+        }
         // Send entity by REST here
     };
+
 
     return <form className={classes.root} noValidate autoComplete="off">
         <Grid container spacing={5} direction="column" alignItems="center" className={ classes.root }>
@@ -104,8 +117,8 @@ export function FormsTab()  {
                 <FormControl>
                     <InputLabel htmlFor="formatted-text-mask-input">Телефон</InputLabel>
                     <Input
-                        value={entity.phone.textmask}
-                        onChange={handlePhoneChange}
+                        value={entity.phone}
+                        onChange={handleEntityChange}
                         name="phone"
                         id="formatted-text-mask-input"
                         inputComponent={TextMaskCustom}

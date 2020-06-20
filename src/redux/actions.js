@@ -1,9 +1,11 @@
 // @flow
 import * as types from './types';
+import axios from '../common/http-common';
 
 export type Actions = {
     loadDataAction: () => void,
     changeTabAction: (number) => void,
+    submitForm: (form: {}) => void,
 }
 
 export const loadDataAction = () => (dispatch: any) => {
@@ -17,4 +19,15 @@ export const changeTabAction = (newTab: number) => (dispatch: any) => {
         type: types.CHANGE_TAB_REQUEST,
         newTab,
     });
+};
+
+export const submitForm = (form: {}) => (dispatch: any) => {
+    console.log('Submit form: ', form);
+    axios.post('/forms', form)
+        .then((res) => {
+            console.log('Successfully submitted: ', res);
+        })
+        .catch((res) => {
+            console.log('Error on form submission: ', res);
+        });
 };
