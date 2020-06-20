@@ -2,6 +2,7 @@
   "name": "react-new-app-template",
   "version": "0.1.0",
   "private": true,
+  "homepage": "file:///home/kest/repos/my/react-new-app-template/build",
   "dependencies": {
     "@material-ui/core": "^4.10.1",
     "@material-ui/pickers": "^4.0.0-alpha.8",

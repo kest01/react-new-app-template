@@ -15,6 +15,11 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
 import MenuItem from '@material-ui/core/MenuItem';
 import Grid from '@material-ui/core/Grid';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import MaskedInput from 'react-text-mask';
 import ruLocale from "date-fns/locale/ru";
 import DateFnsAdapter from "@material-ui/pickers/adapter/date-fns";
@@ -67,8 +72,6 @@ export function FormsTab(props: Props)  {
         phone: '+7 (   )    -  -  ',
     });
     const updateEntity = (field: string, value: any ) => {
-        console.log('Previous entity: ', entity);
-        console.log(`New value - [${field}]: ${value}`)
         setEntity({
             ...entity,
             [field]: value
@@ -94,93 +97,131 @@ export function FormsTab(props: Props)  {
     }
 
     const [errors, setErrors] = React.useState({});
+    const [alertOpen, setAlertOpen] = React.useState(false);
+
+    const handleClickAlertOpen = (event) => {
+        if (event) {
+            event.preventDefault();
+        }
+        setAlertOpen(true);
+    };
+
+    const handleAlertClose = () => {
+        setAlertOpen(false);
+    };
+
     const onSubmit = (event) => {
-        event.preventDefault();
+        if (event) {
+            event.preventDefault();
+        }
         if (validateFormAndShowErrors()) {
             props.submitForm(entity)
         }
-        // Send entity by REST here
+        handleAlertClose();
     };
 
 
-    return <form className={classes.root} noValidate autoComplete="off">
-        <Grid container spacing={5} direction="column" alignItems="center" className={ classes.root }>
-            <Grid container direction="column" xs={3} className={ classes.root }>
-                <TextField required id="outlined-basic" name="textValue" label="Текст" variant="outlined"
-                           value={entity.textValue}
-                           onChange={handleEntityChange}
-                           error={!!errors.textValue}
-                           helperText={errors.textValue}/>
-                <TextField id="outlined-basic" label="Только цифры" type="number" variant="outlined" InputLabelProps={{
-                    shrink: true,
-                }}/>
-                <FormControl>
-                    <InputLabel htmlFor="formatted-text-mask-input">Телефон</InputLabel>
-                    <Input
-                        value={entity.phone}
-                        onChange={handleEntityChange}
-                        name="phone"
-                        id="formatted-text-mask-input"
-                        inputComponent={TextMaskCustom}
-                    />
-                </FormControl>
-                <LocalizationProvider dateAdapter={DateFnsAdapter} locale={ruLocale}>
-                    <DatePicker
-                        renderInput={props => <TextField {...props} />}
-                        value={entity.selectedDate}
-                        name="selectedDate"
-                        inputFormat="yyyy.MM.dd"
-                        mask="____.__.__"
-                        onChange={handleFieldChange("selectedDate")}
-                    />
-                </LocalizationProvider>
-                <FormControl component="fieldset">
-                    <FormLabel component="legend">Настройки</FormLabel>
-                    <FormGroup row>
-                        <FormControlLabel
-                            control={<Checkbox name="checkedA" />}
-                            label="Secondary"
+    return <div>
+        <form className={classes.root} noValidate autoComplete="off">
+            <Grid container spacing={5} direction="column" alignItems="center" className={ classes.root }>
+                <Grid container direction="column" xs={3} className={ classes.root }>
+                    <TextField required id="outlined-basic" name="textValue" label="Текст" variant="outlined"
+                               value={entity.textValue}
+                               onChange={handleEntityChange}
+                               error={!!errors.textValue}
+                               helperText={errors.textValue}/>
+                    <TextField id="outlined-basic" label="Только цифры" type="number" variant="outlined" InputLabelProps={{
+                        shrink: true,
+                    }}/>
+                    <FormControl>
+                        <InputLabel htmlFor="formatted-text-mask-input">Телефон</InputLabel>
+                        <Input
+                            value={entity.phone}
+                            onChange={handleEntityChange}
+                            name="phone"
+                            id="formatted-text-mask-input"
+                            inputComponent={TextMaskCustom}
                         />
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    name="checkedB"
-                                    color="primary"
-                                />
-                            }
-                            label="Primary"
+                    </FormControl>
+                    <LocalizationProvider dateAdapter={DateFnsAdapter} locale={ruLocale}>
+                        <DatePicker
+                            renderInput={props => <TextField {...props} />}
+                            value={entity.selectedDate}
+                            name="selectedDate"
+                            inputFormat="yyyy.MM.dd"
+                            mask="____.__.__"
+                            onChange={handleFieldChange("selectedDate")}
                         />
+                    </LocalizationProvider>
+                    <FormControl component="fieldset">
+                        <FormLabel component="legend">Настройки</FormLabel>
+                        <FormGroup row>
+                            <FormControlLabel
+                                control={<Checkbox name="checkedA" />}
+                                label="Secondary"
+                            />
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                        name="checkedB"
+                                        color="primary"
+                                    />
+                                }
+                                label="Primary"
+                            />
+                        </FormGroup>
+                    </FormControl>
+                    <FormControl component="fieldset">
+                        <FormLabel component="legend">Gender</FormLabel>
+                        <RadioGroup aria-label="gender" name="gender" value={entity.gender} onChange={handleEntityChange}>
+                            <FormControlLabel value="female" control={<Radio />} label="Female" />
+                            <FormControlLabel value="male" control={<Radio />} label="Male" />
+                            <FormControlLabel value="disabled" disabled control={<Radio />} label="(Disabled option)" />
+                        </RadioGroup>
+                    </FormControl>
+                    <FormControl className={classes.formControl}>
+                        <InputLabel id="demo-simple-select-label">Age</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={entity.age}
+                            name="age"
+                            onChange={handleEntityChange}
+                        >
+                            <MenuItem value={10}>Ten</MenuItem>
+                            <MenuItem value={20}>Twenty</MenuItem>
+                            <MenuItem value={30}>Thirty</MenuItem>
+                        </Select>
+                    </FormControl>
+
+
+                    <FormGroup row className={ classes.root }>
+                        <Button color="secondary" variant="contained">Cancel</Button>
+                        <Button color="primary" variant="contained" type="submit" onClick={ handleClickAlertOpen }>Submit</Button>
                     </FormGroup>
-                </FormControl>
-                <FormControl component="fieldset">
-                    <FormLabel component="legend">Gender</FormLabel>
-                    <RadioGroup aria-label="gender" name="gender" value={entity.gender} onChange={handleEntityChange}>
-                        <FormControlLabel value="female" control={<Radio />} label="Female" />
-                        <FormControlLabel value="male" control={<Radio />} label="Male" />
-                        <FormControlLabel value="disabled" disabled control={<Radio />} label="(Disabled option)" />
-                    </RadioGroup>
-                </FormControl>
-                <FormControl className={classes.formControl}>
-                    <InputLabel id="demo-simple-select-label">Age</InputLabel>
-                    <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={entity.age}
-                        name="age"
-                        onChange={handleEntityChange}
-                    >
-                        <MenuItem value={10}>Ten</MenuItem>
-                        <MenuItem value={20}>Twenty</MenuItem>
-                        <MenuItem value={30}>Thirty</MenuItem>
-                    </Select>
-                </FormControl>
-
-
-                <FormGroup row className={ classes.root }>
-                    <Button color="secondary" variant="contained">Cancel</Button>
-                    <Button color="primary" variant="contained" type="submit" onClick={ onSubmit }>Submit</Button>
-                </FormGroup>
+                </Grid>
             </Grid>
-        </Grid>
-    </form>;
+        </form>
+        <Dialog
+            open={alertOpen}
+            onClose={handleAlertClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+        >
+            <DialogTitle id="alert-dialog-title">Submit Form?</DialogTitle>
+            <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                    Are you ready to submit form?
+                </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={handleAlertClose} color="primary">
+                    Disagree
+                </Button>
+                <Button onClick={onSubmit} color="primary" autoFocus>
+                    Agree
+                </Button>
+            </DialogActions>
+        </Dialog>
+    </div>;
 }

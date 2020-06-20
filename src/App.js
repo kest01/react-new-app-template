@@ -11,6 +11,7 @@ import * as actions from "./redux/actions";
 import { history } from './redux/store';
 import { tabIndexToPath } from './common/utils/tab-utils';
 import { FormsTab } from "./common/components/forms-tab";
+import ErrorBoundary from "./common/components/error-boundary";
 import './App.css';
 
 import type { AppStore } from './redux/reducers'
@@ -48,7 +49,7 @@ export class App extends React.Component<Actions & { store: AppStore }> {
         } else {
             const {activeTab} = this.props.store;
             return (
-                <div>
+                <ErrorBoundary textOnError="TODO Add modal window with error message">
                     <AppBar position="static">
                         <Tabs value={activeTab} onChange={this.handleChange} aria-label="simple tabs example">
                             <Tab label="Forms"/>
@@ -61,7 +62,7 @@ export class App extends React.Component<Actions & { store: AppStore }> {
                     <TabPanel value={activeTab} index={1}>
                         Item Two
                     </TabPanel>
-                </div>
+                </ErrorBoundary>
             );
         }
     }
