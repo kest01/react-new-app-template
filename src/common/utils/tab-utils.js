@@ -3,7 +3,7 @@ import { Maybe, fst, snd } from './functional';
 
 const tabMapping = {
     0: '/forms',
-    1: '/modals',
+    1: '/authorized',
 }
 
 // Functions style

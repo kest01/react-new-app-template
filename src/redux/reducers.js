@@ -1,14 +1,27 @@
 import * as types from './types';
 import { pathToTabIndex } from '../common/utils/tab-utils';
 
+export type ProfileType = {
+    isLoading: boolean,
+    isAuthorized: boolean,
+    profileContent: string,
+    errorMessage: string,
+}
+
 export type AppStore = {
     initialized: boolean,
     activeTab: number,
+    profile: ProfileType,
 }
 
 export const initialState: AppStore = {
     initialized: false,
     activeTab: 0,
+    profile: {
+        isLoading: true,
+        isAuthorized: false,
+        profileContent: 'No content',
+    }
 };
 
 export default (state: AppStore = initialState, action: any): AppStore => {
@@ -31,31 +44,35 @@ export default (state: AppStore = initialState, action: any): AppStore => {
                 ...state,
                 activeTab: pathToTabIndex(action.payload.location.pathname),
             };
-/*        case types.LOCATION_CHANGE:
-            const newTab = pathToTabIndex(action.payload.location.pathname);
-            const newCountry = newTab === 2 ? queryString.parse(action.payload.location.search).country : undefined;
+        case types.LOAD_PROFILE_DATA_REQUEST:
             return {
                 ...state,
-                activeTab: pathToTabIndex(action.payload.location.pathname),
-                selectedCountry: newCountry ? newCountry : state.selectedCountry,
+                profile: {
+                    isLoading: true,
+                    isAuthorized: true,
+                    profileContent: action.content,
+                    errorMessage: null,
+                }
             };
-        case types.ADD_COUNTRY_TO_COMPARISON:
+        case types.PROFILE_NOT_AUTHORIZED:
             return {
                 ...state,
-                comparisonCountries: state.comparisonCountries.includes(action.country)
-                    ? state.comparisonCountries
-                    : state.comparisonCountries.push(action.country),
+                profile: {
+                    isLoading: true,
+                    isAuthorized: false,
+                    ...state.profile,
+                }
             };
-        case types.REMOVE_COUNTRY_FROM_COMPARISON:
+        case types.PROFILE_ERROR:
             return {
                 ...state,
-                comparisonCountries: state.comparisonCountries.filter(value => value !== action.country),
+                profile: {
+                    isLoading: true,
+                    isAuthorized: false,
+                    errorMessage: action.errorMessage,
+                    ...state.profile,
+                }
             };
-        case types.UPDATE_CHART_THRESHOLD:
-            return {
-                ...state,
-                chartThreshold: action.newThreshold,
-            };*/
         default:
             return state
     }

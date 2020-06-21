@@ -25,7 +25,6 @@ export default class ErrorBoundary extends React.Component<PropsType, StateType>
     }
 
     render() {
-        console.log("ErrorBoundary!!!")
         if ( this.state.hasError ) {
             console.log(this.props.textOnError)
             // return <Alert variant="danger">{this.props.textOnError}</Alert>;

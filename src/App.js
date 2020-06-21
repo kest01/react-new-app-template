@@ -11,6 +11,7 @@ import * as actions from "./redux/actions";
 import { history } from './redux/store';
 import { tabIndexToPath } from './common/utils/tab-utils';
 import { FormsTab } from "./common/components/forms-tab";
+import Profile from "./features/profile/Profile";
 import ErrorBoundary from "./common/components/error-boundary";
 import './App.css';
 
@@ -53,14 +54,16 @@ export class App extends React.Component<Actions & { store: AppStore }> {
                     <AppBar position="static">
                         <Tabs value={activeTab} onChange={this.handleChange} aria-label="simple tabs example">
                             <Tab label="Forms"/>
-                            <Tab label="Modals"/>
+                            <Tab label="Authorized"/>
                         </Tabs>
                     </AppBar>
                     <TabPanel value={activeTab} index={0}>
                         <FormsTab submitForm={ this.props.submitForm } />
                     </TabPanel>
                     <TabPanel value={activeTab} index={1}>
-                        Item Two
+                        <Profile loginAction={ this.props.loginAction }
+                                 loadProfileDataAction={ this.props.loadProfileDataAction }
+                                 {...this.props.store.profile} />
                     </TabPanel>
                 </ErrorBoundary>
             );
